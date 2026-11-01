@@ -7,7 +7,7 @@
     const r = await fetch('shots/' + n, {cache: 'no-store'});
     files.push({name: n.split('/').pop(), type: r.headers.get('content-type'), buf: await r.arrayBuffer()});
   }
-  window.opener.postMessage({relayFiles: files}, 'https://appstoreconnect.apple.com');
+  (window.opener || window.parent).postMessage({relayFiles: files}, 'https://appstoreconnect.apple.com');
   document.body.textContent = 'sent ' + files.length;
 })();
 </script>
