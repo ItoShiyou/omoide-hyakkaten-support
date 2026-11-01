@@ -1,0 +1,13 @@
+<!doctype html><meta charset="utf-8"><title>relay</title>
+<script>
+(async () => {
+  const names = new URLSearchParams(location.search).get('f').split(',');
+  const files = [];
+  for (const n of names) {
+    const r = await fetch('shots/' + n, {cache: 'no-store'});
+    files.push({name: n.split('/').pop(), type: r.headers.get('content-type'), buf: await r.arrayBuffer()});
+  }
+  window.opener.postMessage({relayFiles: files}, 'https://appstoreconnect.apple.com');
+  document.body.textContent = 'sent ' + files.length;
+})();
+</script>
